@@ -28,32 +28,29 @@ rankall <- function(outcome, num = "best"){
   
   ##Clean data of NA values. ranked is new cleaned data
   cleanout <- data[!is.na(data[, outtemp]),]
-  ranked <- cleanout[order(cleanout[2], cleanout[outtemp]),
-                    cleanout[1],]
+  ranked <- cleanout[order(cleanout[2], cleanout[outtemp],
+                    cleanout[1]),]
   
   sorted <- split(ranked, as.factor(ranked$state))
   hospName <- vector("character", length = length(sorted))
   
   if(num == "best"){
-    for(i in 1:length(ranked))
-      hospName[i] <- ranked[[i]][1,1]
+    for(i in 1:length(sorted))
+      hospName[i] <- sorted[[i]][1,1]
   }
   else if(num == "worst"){
-    for(i in 1:length(ranked)){
-        index <- nrow(ranked[[i]])
-        hospName[i] <- ranked[[i]][index,1]
+    for(i in 1:length(sorted)){
+        index <- nrow(sorted[[i]])
+        hospName[i] <- sorted[[i]][index,1]
     }
   }
   else if(num %% 1 == 0){
-    for(i in 1:length(ranked))
-        hospName[i] <- sort[[i]][num,1]
+    for(i in 1:length(sorted))
+        hospName[i] <- sorted[[i]][num,1]
   }
-  
-
-   
   ##Return a data frame with the hospital names and the 
   ##(abbreviated) state name
-  stateName <- names(ranked)
-  result <- data.frame(hospital = hospNam, state = stateName,
+  stateName <- names(sorted)
+  result <- data.frame(hospital = hospName, state = stateName,
                        row.names = stateName)
 }
